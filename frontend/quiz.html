@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz — QuizMaster</title>
+  <meta name="description" content="Take your MCQ quiz on QuizMaster with live timer and instant scoring." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="quiz-body">
+  <!-- Quiz Header -->
+  <div class="quiz-header" id="quizHeader">
+    <div class="quiz-header-inner">
+      <a href="quizzes.html" class="btn btn-ghost btn-sm" id="exitQuizBtn" onclick="return confirmExit()">← Exit</a>
+      <div class="quiz-title-bar">
+        <h1 id="quizTitleBar">Loading...</h1>
+        <span id="questionCounter" class="q-counter">0 / 0</span>
+      </div>
+      <div class="timer-box" id="timerBox">
+        <span class="timer-icon">⏱</span>
+        <span id="timerDisplay">00:00</span>
+      </div>
+    </div>
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Question Area -->
+  <main class="quiz-main" id="quizMain">
+    <div class="loading-spinner" id="quizLoading">
+      <div class="spinner"></div>
+      <p>Preparing your quiz...</p>
+    </div>
+
+    <div id="questionArea" style="display:none">
+      <div class="question-card" id="questionCard">
+        <div class="question-meta">
+          <span class="question-num" id="questionNum">Question 1</span>
+          <span class="question-pts" id="questionPts">1 pt</span>
+        </div>
+        <div class="question-text" id="questionText"></div>
+        <div class="options-grid" id="optionsGrid"></div>
+        <div class="question-nav">
+          <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()">← Prev</button>
+          <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next →</button>
+        </div>
+      </div>
+
+      <!-- Question palette -->
+      <div class="question-palette">
+        <div class="palette-title">Questions</div>
+        <div class="palette-grid" id="paletteGrid"></div>
+        <button class="btn btn-success btn-full" id="submitQuizBtn" onclick="confirmSubmit()">
+          Submit Quiz ✓
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Submit Confirmation Modal -->
+  <div class="modal-overlay" id="submitModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <div class="modal-icon">📋</div>
+        <h2>Submit Quiz?</h2>
+        <p id="submitSummary">Are you sure you want to submit?</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeSubmitModal()">Review Answers</button>
+        <button class="btn btn-primary" onclick="submitQuiz()">Submit Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>

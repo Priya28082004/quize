@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — QuizMaster</title>
+  <meta name="description" content="Admin panel to manage quizzes, questions, and view all user attempts." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin-body">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">⚡</span>
+      <span>QuizMaster</span>
+      <span class="admin-badge">ADMIN</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="sidebar-link active" onclick="showTab('dashboard', this)">
+        <span class="sl-icon">📊</span> Dashboard
+      </a>
+      <a href="#" class="sidebar-link" onclick="showTab('quizzes', this)">
+        <span class="sl-icon">📝</span> Quizzes
+      </a>
+      <a href="#" class="sidebar-link" onclick="showTab('questions', this)">
+        <span class="sl-icon">❓</span> Add Questions
+      </a>
+      <a href="#" class="sidebar-link" onclick="showTab('attempts', this)">
+        <span class="sl-icon">🏃</span> All Attempts
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <span id="adminName">Admin</span>
+      <a href="index.html" class="btn btn-ghost btn-sm">← Back to Site</a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="admin-content" id="adminContent">
+    <!-- Header -->
+    <div class="admin-topbar">
+      <h2 id="adminPageTitle">Dashboard</h2>
+      <div class="admin-user">
+        <span>👤 <span id="adminUsername">admin</span></span>
+        <button class="btn btn-ghost btn-sm" onclick="logout(); window.location='index.html'">Logout</button>
+      </div>
+    </div>
+
+    <!-- ═══ Dashboard Tab ═══ -->
+    <div id="tabDashboard" class="admin-tab">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon">📝</div>
+          <div class="stat-card-info">
+            <span class="stat-card-num" id="totalQuizzes">—</span>
+            <span class="stat-card-label">Total Quizzes</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">🏃</div>
+          <div class="stat-card-info">
+            <span class="stat-card-num" id="totalAttempts">—</span>
+            <span class="stat-card-label">Total Attempts</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">✅</div>
+          <div class="stat-card-info">
+            <span class="stat-card-num" id="completedAttempts">—</span>
+            <span class="stat-card-label">Completed</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">📈</div>
+          <div class="stat-card-info">
+            <span class="stat-card-num" id="avgScore">—</span>
+            <span class="stat-card-label">Avg Score %</span>
+          </div>
+        </div>
+      </div>
+      <div class="recent-section">
+        <h3>Recent Attempts</h3>
+        <div id="recentAttempts"></div>
+      </div>
+    </div>
+
+    <!-- ═══ Quizzes Tab ═══ -->
+    <div id="tabQuizzes" class="admin-tab" style="display:none">
+      <div class="tab-actions">
+        <h3>Manage Quizzes</h3>
+        <button class="btn btn-primary" onclick="openCreateQuizModal()">+ New Quiz</button>
+      </div>
+      <div id="adminQuizList" class="admin-quiz-list"></div>
+    </div>
+
+    <!-- ═══ Questions Tab ═══ -->
+    <div id="tabQuestions" class="admin-tab" style="display:none">
+      <div class="tab-actions">
+        <h3>Add Question to Quiz</h3>
+      </div>
+      <div class="question-form-card">
+        <form id="addQuestionForm" onsubmit="submitAddQuestion(event)">
+          <div class="form-group">
+            <label>Select Quiz</label>
+            <select id="qQuizSelect" required class="admin-select">
+              <option value="">— Choose Quiz —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Question Text</label>
+            <textarea id="qText" rows="3" placeholder="Enter your question..." required></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Display Order</label>
+              <input type="number" id="qOrder" value="1" min="1" required />
+            </div>
+            <div class="form-group">
+              <label>Points</label>
+              <input type="number" id="qPoints" value="1" min="1" required />
+            </div>
+          </div>
+          <div class="options-builder" id="optionsBuilder">
+            <label>Answer Options <span class="hint">(check the correct one)</span></label>
+            <div class="option-row">
+              <input type="radio" name="correctOpt" value="0" id="cr0" required />
+              <input type="text" id="opt0" placeholder="Option A" required />
+            </div>
+            <div class="option-row">
+              <input type="radio" name="correctOpt" value="1" id="cr1" />
+              <input type="text" id="opt1" placeholder="Option B" required />
+            </div>
+            <div class="option-row">
+              <input type="radio" name="correctOpt" value="2" id="cr2" />
+              <input type="text" id="opt2" placeholder="Option C" />
+            </div>
+            <div class="option-row">
+              <input type="radio" name="correctOpt" value="3" id="cr3" />
+              <input type="text" id="opt3" placeholder="Option D" />
+            </div>
+          </div>
+          <div class="form-error" id="qFormError"></div>
+          <button type="submit" class="btn btn-primary">Add Question</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ═══ Attempts Tab ═══ -->
+    <div id="tabAttempts" class="admin-tab" style="display:none">
+      <div class="tab-actions">
+        <h3>All User Attempts</h3>
+        <button class="btn btn-ghost btn-sm" onclick="loadAttempts()">🔄 Refresh</button>
+      </div>
+      <div id="attemptsLoading" class="loading-spinner">
+        <div class="spinner"></div><p>Loading...</p>
+      </div>
+      <table class="lb-table" id="attemptsTable" style="display:none">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>User</th>
+            <th>Quiz</th>
+            <th>Score</th>
+            <th>%</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="attemptsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Create Quiz Modal -->
+  <div class="modal-overlay" id="createQuizModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeCreateQuizModal()">✕</button>
+      <div class="modal-header">
+        <div class="modal-icon">📝</div>
+        <h2 id="quizModalTitle">Create New Quiz</h2>
+      </div>
+      <form id="createQuizForm" onsubmit="submitQuizForm(event)">
+        <div class="form-group">
+          <label>Quiz Title</label>
+          <input type="text" id="cqTitle" placeholder="e.g. Advanced Mathematics" required />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="cqDesc" rows="3" placeholder="Brief description of the quiz..." required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <select id="cqCategory" class="admin-select">
+              <option>General</option>
+              <option>Science</option>
+              <option>Mathematics</option>
+              <option>History</option>
+              <option>Technology</option>
+              <option>Sports</option>
+              <option>Literature</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Time Limit (seconds)</label>
+            <input type="number" id="cqTime" value="300" min="30" required />
+          </div>
+        </div>
+        <div class="form-error" id="cqError"></div>
+        <button type="submit" class="btn btn-primary btn-full" id="cqSubmitBtn">Create Quiz</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

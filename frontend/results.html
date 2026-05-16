@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Results — QuizMaster</title>
+  <meta name="description" content="View your quiz results and score breakdown on QuizMaster." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="bg-particles" id="bgParticles"></div>
+
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><span class="logo-icon">⚡</span><span>QuizMaster</span></a>
+      <div class="nav-links">
+        <a href="quizzes.html" class="nav-link">Quizzes</a>
+        <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+      </div>
+      <div class="nav-auth" id="navAuth">
+        <div class="nav-user" id="navUser">
+          <span class="user-greeting">👋 <span id="navUsername"></span></span>
+          <button class="btn btn-ghost" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page-main" id="resultsMain">
+    <div class="loading-spinner" id="resultsLoading">
+      <div class="spinner"></div>
+      <p>Calculating your score...</p>
+    </div>
+
+    <div id="resultsContent" style="display:none">
+      <!-- Score Card -->
+      <div class="score-card" id="scoreCard">
+        <div class="score-emoji" id="scoreEmoji">🎉</div>
+        <h1 class="score-title" id="scoreTitle">Results</h1>
+        <div class="score-circle-wrap">
+          <div class="score-circle" id="scoreCircle">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+              <circle cx="60" cy="60" r="54" fill="none" stroke="url(#scoreGrad)" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="339.3"
+                id="scoreArc" style="transition: stroke-dashoffset 1.5s ease"/>
+              <defs>
+                <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#a78bfa"/>
+                  <stop offset="100%" style="stop-color:#60a5fa"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="score-inner">
+              <span class="score-pct" id="scorePct">0%</span>
+              <span class="score-label">Score</span>
+            </div>
+          </div>
+        </div>
+        <div class="score-stats">
+          <div class="score-stat">
+            <span class="ss-num" id="ssCorrect">0</span>
+            <span class="ss-label">Correct</span>
+          </div>
+          <div class="score-stat">
+            <span class="ss-num" id="ssTotal">0</span>
+            <span class="ss-label">Total</span>
+          </div>
+          <div class="score-stat">
+            <span class="ss-num" id="ssTime">0s</span>
+            <span class="ss-label">Time</span>
+          </div>
+        </div>
+        <div class="score-actions">
+          <a href="quizzes.html" class="btn btn-primary btn-lg">Take Another Quiz</a>
+          <a href="leaderboard.html" class="btn btn-ghost btn-lg">View Leaderboard</a>
+        </div>
+      </div>
+
+      <!-- Answer Review -->
+      <div class="review-section">
+        <h2 class="section-title">Answer Review</h2>
+        <div id="reviewList"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/results.js"></script>
+</body>
+</html>

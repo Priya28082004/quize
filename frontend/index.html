@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizMaster — Online Quiz Platform</title>
+  <meta name="description" content="Test your knowledge with QuizMaster — a dynamic MCQ quiz platform with real-time scoring and leaderboards." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="bg-particles" id="bgParticles"></div>
+
+  <!-- Nav -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">⚡</span>
+        <span>QuizMaster</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="quizzes.html" class="nav-link">Quizzes</a>
+        <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+        <span id="navAdminLink" style="display:none">
+          <a href="admin.html" class="nav-link">Admin</a>
+        </span>
+      </div>
+      <div class="nav-auth" id="navAuth">
+        <button class="btn btn-ghost" id="navLoginBtn" onclick="showAuthModal('login')">Login</button>
+        <button class="btn btn-primary" id="navRegisterBtn" onclick="showAuthModal('register')">Get Started</button>
+        <div class="nav-user" id="navUser" style="display:none">
+          <span class="user-greeting">👋 <span id="navUsername"></span></span>
+          <button class="btn btn-ghost" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="heroSection">
+    <div class="hero-content">
+      <div class="hero-badge">🏆 #1 Quiz Platform</div>
+      <h1 class="hero-title">
+        Challenge Your<br/>
+        <span class="gradient-text">Knowledge</span>
+      </h1>
+      <p class="hero-subtitle">
+        Test yourself with our curated MCQ quizzes across multiple categories.
+        Compete with others, track your score, and climb the leaderboard!
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" id="heroStartBtn" onclick="handleHeroStart()">
+          Start Quiz Now →
+        </button>
+        <a href="leaderboard.html" class="btn btn-ghost btn-lg">View Leaderboard</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num" id="statQuizzes">—</span>
+          <span class="stat-label">Quizzes</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" id="statPlayers">—</span>
+          <span class="stat-label">Players</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">Real-time</span>
+          <span class="stat-label">Scoring</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="quiz-card-preview">
+        <div class="qcp-header">
+          <span class="qcp-badge">General Knowledge</span>
+          <span class="qcp-timer">⏱ 2:00</span>
+        </div>
+        <div class="qcp-question">What is the capital of France?</div>
+        <div class="qcp-options">
+          <div class="qcp-option">🔘 London</div>
+          <div class="qcp-option selected">🔵 Paris</div>
+          <div class="qcp-option">🔘 Berlin</div>
+          <div class="qcp-option">🔘 Rome</div>
+        </div>
+        <div class="qcp-progress">
+          <div class="qcp-bar"><div class="qcp-bar-fill" style="width:33%"></div></div>
+          <span>2 / 6</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <h2 class="section-title">Why QuizMaster?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⏱</div>
+        <h3>Timed Challenges</h3>
+        <p>Every quiz has a configurable countdown timer. Race against the clock to maximize your score.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Instant Scoring</h3>
+        <p>See your results the moment you submit. Get detailed breakdowns of correct and incorrect answers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Live Leaderboard</h3>
+        <p>Compete with others globally. See your rank and compare scores with the best players.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Secure Auth</h3>
+        <p>JWT-secured accounts with BCrypt password hashing. Your data is always safe.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal" id="authModalBox">
+      <button class="modal-close" onclick="closeAuthModal()">✕</button>
+
+      <!-- Login Form -->
+      <div id="loginForm">
+        <div class="modal-header">
+          <div class="modal-icon">🔐</div>
+          <h2>Welcome Back</h2>
+          <p>Sign in to continue your quiz journey</p>
+        </div>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" required />
+          </div>
+          <div class="form-error" id="loginError"></div>
+          <button type="submit" class="btn btn-primary btn-full" id="loginSubmitBtn">Sign In</button>
+        </form>
+        <p class="modal-switch">Don't have an account? <a onclick="switchAuthForm('register')">Register free →</a></p>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerForm" style="display:none">
+        <div class="modal-header">
+          <div class="modal-icon">🚀</div>
+          <h2>Create Account</h2>
+          <p>Join thousands of quiz enthusiasts</p>
+        </div>
+        <form onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="regUsername" placeholder="cooluser123" required minlength="3" />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="regEmail" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="Min 6 characters" required minlength="6" />
+          </div>
+          <div class="form-error" id="registerError"></div>
+          <button type="submit" class="btn btn-primary btn-full" id="registerSubmitBtn">Create Account</button>
+        </form>
+        <p class="modal-switch">Already have an account? <a onclick="switchAuthForm('login')">Sign in →</a></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>⚡ QuizMaster — Built with C# ASP.NET Core 8 & SQL Server</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

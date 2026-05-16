@@ -1,0 +1,10 @@
+# Visual Studio Code
+.vscode/
+
+# .NET Core
+bin/
+obj/
+appsettings.Development.json
+
+# Environment variables
+.env

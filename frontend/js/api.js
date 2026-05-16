@@ -1,5 +1,5 @@
 // API base URL - change this to your server address
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://cautious-cod-x5qx9v9wjw6rhvwgp-5000.app.github.dev/api';
 
 async function apiFetch(path, options = {}) {
   const token = localStorage.getItem('qm_token');
